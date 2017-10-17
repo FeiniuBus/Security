@@ -32,9 +32,9 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
             Backchannel.Timeout = TimeSpan.FromSeconds(5);  // 5s
         }
         
-        protected HttpClient Backchannel { get; set; }
+        protected HttpClient Backchannel { get; }
         
-        protected SignatureOptions Options { get; set; }
+        protected SignatureOptions Options { get; }
 
         public async Task Invoke(HttpContext context)
         {
@@ -92,8 +92,8 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
                     SignatureUtils.ToHex(signature, true), signAt);
                 return false;
             }
-                
 
+            req.Headers.Add(HeaderKeys.XFeiniuBusAccessKeyHeader, accessKeyId);
             return true;
         }
 

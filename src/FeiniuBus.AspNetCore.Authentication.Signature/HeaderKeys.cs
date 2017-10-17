@@ -4,5 +4,6 @@
     {
         public const string AuthorizationHeader = "Authorization";
         public const string XFeiniuBusDateHeader = "x-feiniubus-date";
+        public const string XFeiniuBusAccessKeyHeader = "x-feiniubus-accesskey";
     }
 }
