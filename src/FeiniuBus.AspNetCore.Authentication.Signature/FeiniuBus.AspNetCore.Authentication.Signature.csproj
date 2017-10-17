@@ -1,6 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Version>2.0.0</Version>
+    <Authors>FeiniuBus</Authors>
+    <Company>FeiniuBus Corporation.</Company>
+    <Product>FeiniuBus</Product>
+    <Description>FeiniuBus security signature middleware</Description>
+    <Copyright>© FeiniuBus Corporation. All rights reserved.</Copyright>
+    <PackageIconUrl>https://s3.cn-north-1.amazonaws.com.cn/nuget-icons/icon175x175.jpeg</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FeiniuBus/Security/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FeiniuBus/Security</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FeiniuBus/Security.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>security;signature;sign;signer</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
