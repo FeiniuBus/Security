@@ -1,7 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>FeiniuBus</Authors>
+    <Company>FeiniuBus Corporation.</Company>
+    <Product>FeiniuBus</Product>
+    <Description>FeiniuBus Data Protection</Description>
+    <Copyright>© FeiniuBus Corporation. All rights reserved.</Copyright>
+    <PackageIconUrl>https://s3.cn-north-1.amazonaws.com.cn/nuget-icons/icon175x175.jpeg</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/FeiniuBus/Security/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FeiniuBus/Security</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FeiniuBus/Security.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>aspnetcore;data;feiniubus;protection</PackageTags>
+    <Version>2.0.0</Version>
+    <FileVersion>2.0.0</FileVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
   </PropertyGroup>
-
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.11.2" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0" />
+  </ItemGroup>
 </Project>
