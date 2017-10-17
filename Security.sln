@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeiniuBus.AspNetCore.DataProtection", "src\FeiniuBus.AspNetCore.DataProtection\FeiniuBus.AspNetCore.DataProtection.csproj", "{AE7C40D4-BADD-48C5-8F50-A5D0069382C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeiniuBus.AspNetCore.Authentication.Signature", "src\FeiniuBus.AspNetCore.Authentication.Signature\FeiniuBus.AspNetCore.Authentication.Signature.csproj", "{C35336E2-BAD7-4C30-9E51-7CB3D018C640}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AE7C40D4-BADD-48C5-8F50-A5D0069382C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE7C40D4-BADD-48C5-8F50-A5D0069382C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE7C40D4-BADD-48C5-8F50-A5D0069382C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C35336E2-BAD7-4C30-9E51-7CB3D018C640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35336E2-BAD7-4C30-9E51-7CB3D018C640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35336E2-BAD7-4C30-9E51-7CB3D018C640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35336E2-BAD7-4C30-9E51-7CB3D018C640}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
