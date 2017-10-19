@@ -130,6 +130,7 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
             }
             catch (Exception e)
             {
+                _logger.LogWarning(898, e, "从缓存中获取数据失败");
                 return null;
             }
         }
