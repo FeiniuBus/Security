@@ -4,33 +4,13 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using FeiniuBus.Security.Signer.Util;
 
 namespace FeiniuBus.Security.Signer
 {
-    public class FeiniuBus1HmacSigner : AbstractHmacSigner
-    {
-        private const string Scheme = "FNBUS1";
-        private const string Algorithm = "HMAC-SHA256";
-
-        private const string FeiniuBus1AlgorithmTag = Scheme + "-" + Algorithm;
-
-        private const string Iso8601BasicDateTimeFormat = "yyyyMMddTHHmmssZ";
-        private const string Iso8601BasicDateFormat = "yyyyMMdd";
-
-        private const string Terminator = "feiniubus_request";
-        private static readonly byte[] TerminatorBytes = Encoding.UTF8.GetBytes(Terminator);
-
-        private const string Credential = "Credential";
-        private const string SignedHeaders = "SignedHeaders";
-        private const string Signature = "Signature";
-
-        private const string EmptyBodySha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-
-        private static readonly Regex CompressWhitespaceRegex = new Regex("\\s+");
-        
-        public override HmacSigningResult Sign(SigningContext ctx)
+    public class FeiniuBus1HmacSigner : AbstractHmac, IHmacSigner
+    {   
+        public HmacSigningResult Sign(SigningContext ctx)
         {
             return SignRequest(ctx);
         }
@@ -67,10 +47,10 @@ namespace FeiniuBus.Security.Signer
 
             result.Signature = signature;
             var authorizationHeader = new StringBuilder();
-            authorizationHeader.Append(FeiniuBus1AlgorithmTag);
-            authorizationHeader.AppendFormat(" {0}={1}/{2},", Credential, ctx.Identifier, credentialString);
-            authorizationHeader.AppendFormat("{0}={1},", SignedHeaders, canonicalizedHeaderNames);
-            authorizationHeader.AppendFormat("{0}={1}", Signature, signature);
+            authorizationHeader.Append(Constants.FeiniuBus1AlgorithmTag);
+            authorizationHeader.AppendFormat(" {0}={1}/{2},", Constants.Credential, ctx.Identifier, credentialString);
+            authorizationHeader.AppendFormat("{0}={1},", Constants.SignedHeaders, canonicalizedHeaderNames);
+            authorizationHeader.AppendFormat("{0}={1}", Constants.Signature, signature);
             result.Headers.Add(HeaderKeys.AuthorizationHeader, authorizationHeader.ToString());
 
             return result;
@@ -79,15 +59,15 @@ namespace FeiniuBus.Security.Signer
         private static string ComputeSignature(string key, DateTime signedAt, string credentialString,
             string canonicalRequest)
         {
-            var dateStamp = signedAt.ToString(Iso8601BasicDateFormat, CultureInfo.InvariantCulture);
+            var dateStamp = signedAt.ToString(Constants.Iso8601BasicDateFormat, CultureInfo.InvariantCulture);
 
 
 
             var stringToSignBuilder = new StringBuilder();
             stringToSignBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}-{1}\n{2}\n{3}\n",
-                Scheme,
-                Algorithm,
-                signedAt.ToString(Iso8601BasicDateTimeFormat, CultureInfo.InvariantCulture),
+                Constants.Scheme,
+                Constants.Algorithm,
+                signedAt.ToString(Constants.Iso8601BasicDateTimeFormat, CultureInfo.InvariantCulture),
                 credentialString);
 
             var canonicalRequestHashBytes = ComputeHash(canonicalRequest);
@@ -105,11 +85,11 @@ namespace FeiniuBus.Security.Signer
 
             try
             {
-                ksecret = (Scheme + key).ToCharArray();
+                ksecret = (Constants.Scheme + key).ToCharArray();
 
                 var hashDate = ComputeKeyedHash(SigningAlgorithm.HmacSHA256, Encoding.UTF8.GetBytes(ksecret),
                     Encoding.UTF8.GetBytes(date));
-                return ComputeKeyedHash(SigningAlgorithm.HmacSHA256, hashDate, TerminatorBytes);
+                return ComputeKeyedHash(SigningAlgorithm.HmacSHA256, hashDate, Constants.TerminatorBytes);
             }
             finally
             {
@@ -124,7 +104,7 @@ namespace FeiniuBus.Security.Signer
         {
             var credentialStringBuilder = new StringBuilder();
             credentialStringBuilder.AppendFormat("{0}/{1}",
-                signedAt.ToString(Iso8601BasicDateFormat, CultureInfo.InvariantCulture), Terminator);
+                signedAt.ToString(Constants.Iso8601BasicDateFormat, CultureInfo.InvariantCulture), Constants.Terminator);
 
             return credentialStringBuilder.ToString();
         }
@@ -196,7 +176,7 @@ namespace FeiniuBus.Security.Signer
         {
             if (body == null || body.Length == 0)
             {
-                return EmptyBodySha256;
+                return Constants.EmptyBodySha256;
             }
 
             var hashed = CryptoUtilFactory.CryptoInstance.ComputeSha256Hash(body);
@@ -210,7 +190,7 @@ namespace FeiniuBus.Security.Signer
                 return data;
             }
 
-            return CompressWhitespaceRegex.Replace(data, " ");
+            return Constants.CompressWhitespaceRegex.Replace(data, " ");
         }
 
         private static string CanonicalizeQueryParameters(IEnumerable<KeyValuePair<string, string>> parameters,
@@ -279,7 +259,7 @@ namespace FeiniuBus.Security.Signer
         {
             var dt = DateTime.UtcNow;
             result.Headers.Add(HeaderKeys.XFeiniuBusDateHeader,
-                dt.ToString(Iso8601BasicDateTimeFormat, CultureInfo.InvariantCulture));
+                dt.ToString(Constants.Iso8601BasicDateTimeFormat, CultureInfo.InvariantCulture));
             return dt;
         }
     }

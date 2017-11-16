@@ -5,10 +5,8 @@
 
 namespace FeiniuBus.Security.Signer
 {
-    public abstract class AbstractHmacSigner : IHmacSigner
+    public abstract class AbstractHmac
     {
-        public abstract  HmacSigningResult Sign(SigningContext ctx);
-
         protected static string ComputeHash(string data, string key, SigningAlgorithm algorithm)
         {
             try
