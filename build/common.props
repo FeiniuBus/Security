@@ -1,0 +1,11 @@
+<Project>
+  <Import Project="..\version.props" />
+
+  <PropertyGroup>
+    <Product>FeiniuBus ASP.NET Core</Product>
+    <RepositoryUrl>https://github.com/FeiniuBus/Security</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
