@@ -17,7 +17,7 @@
     <AssemblyVersion>2.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.11.2" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.0" />
+    <PackageReference Include="AWSSDK.S3" Version="$(AWSSDKS3PackageVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="$(MicrosoftAspNetCoreDataProtectionPackageVersion)" />
   </ItemGroup>
 </Project>
