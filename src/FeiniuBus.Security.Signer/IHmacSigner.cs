@@ -8,4 +8,9 @@ namespace FeiniuBus.Security.Signer
     {
         HmacSigningResult Sign(SigningContext ctx);
     }
+
+    public interface IHmacValidator
+    {
+        bool Verify(VerifingContext ctx);
+    }
 }
