@@ -1,0 +1,16 @@
+<Project>
+  <Import
+    Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), AspNetCoreSettings.props))\AspNetCoreSettings.props"
+    Condition=" '$(CI)' != 'true' AND '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), AspNetCoreSettings.props))' != '' " />
+
+  <Import Project="version.props" />
+  <Import Project="build\dependencies.props" />
+
+  <PropertyGroup>
+    <Product>FeiniuBus ASP.NET Core Security</Product>
+    <RepositoryUrl>https://github.com/FeiniuBus/Security</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>
