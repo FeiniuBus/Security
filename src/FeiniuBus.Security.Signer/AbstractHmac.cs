@@ -51,5 +51,15 @@ namespace FeiniuBus.Security.Signer
         {
             return CryptoUtilFactory.CryptoInstance.ComputeSha256Hash(data);
         }
+        
+        protected static string CompressSpaces(string data)
+        {
+            if (data == null || !data.Contains(" "))
+            {
+                return data;
+            }
+
+            return Constants.CompressWhitespaceRegex.Replace(data, " ");
+        }
     }
 }

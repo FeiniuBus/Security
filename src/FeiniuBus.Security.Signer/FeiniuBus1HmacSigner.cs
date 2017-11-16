@@ -183,16 +183,6 @@ namespace FeiniuBus.Security.Signer
             return Hex.EncodeToString(hashed, true);
         }
 
-        private static string CompressSpaces(string data)
-        {
-            if (data == null || !data.Contains(" "))
-            {
-                return data;
-            }
-
-            return Constants.CompressWhitespaceRegex.Replace(data, " ");
-        }
-
         private static string CanonicalizeQueryParameters(IEnumerable<KeyValuePair<string, string>> parameters,
             bool uriEncodeParameters = true)
         {
