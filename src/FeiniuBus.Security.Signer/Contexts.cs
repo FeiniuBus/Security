@@ -6,6 +6,12 @@ namespace FeiniuBus.Security.Signer
 {
     public class SigningContext
     {
+        public SigningContext()
+        {
+            Query = new Dictionary<string, string>();
+            Header = new Dictionary<string, string>();
+        }
+        
         public Uri Endpoint { get; set; }
         
         public string Method { get; set; }

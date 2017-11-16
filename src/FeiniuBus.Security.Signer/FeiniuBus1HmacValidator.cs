@@ -13,10 +13,12 @@ namespace FeiniuBus.Security.Signer
     public class FeiniuBus1HmacValidator : AbstractHmac, IHmacValidator
     {
         private readonly ILogger _logger;
+        private readonly Func<string, string> _getKeyFunc;
 
-        public FeiniuBus1HmacValidator(ILoggerFactory factory)
+        public FeiniuBus1HmacValidator(ILoggerFactory factory, Func<string, string> getKeyFunc)
         {
             _logger = factory.CreateLogger<FeiniuBus1HmacValidator>();
+            _getKeyFunc = getKeyFunc;
         }
         
         public bool Verify(VerifingContext ctx)
@@ -76,7 +78,7 @@ namespace FeiniuBus.Security.Signer
                 return false;
             }
 
-            var credentialString = BuildCredentialString(signAt, credSuffix);
+            var credentialString = BuildCredentialString(shortedTime, credSuffix);
             var bodyHash = SetRequestBodyHash(ctx.Body);
 
             var parametersToCanonicalize =
@@ -86,7 +88,8 @@ namespace FeiniuBus.Security.Signer
             var canonicalRequest = CanonicalizeRequest(ctx.Path, ctx.Method, ctx.Header, signedHeaders,
                 canonicalQueryParams, bodyHash);
 
-            var signature = ComputeSignature(id, parts[0], signAt, shortedTime, credentialString, canonicalRequest,
+            var key = _getKeyFunc(id);
+            var signature = ComputeSignature(key, parts[0], signAt, shortedTime, credentialString, canonicalRequest,
                 scheme, credSuffix);
 
             return clientSignatures == signature;
@@ -237,10 +240,10 @@ namespace FeiniuBus.Security.Signer
             return Hex.EncodeToString(hashed, true);
         }
 
-        private static string BuildCredentialString(string signedAt, string credSuffix)
+        private static string BuildCredentialString(string shortedTime, string credSuffix)
         {
             var credentialStringBuilder = new StringBuilder();
-            credentialStringBuilder.AppendFormat("{0}/{1}", signedAt, credSuffix);
+            credentialStringBuilder.AppendFormat("{0}/{1}", shortedTime, credSuffix);
             return credentialStringBuilder.ToString();
         }
 
