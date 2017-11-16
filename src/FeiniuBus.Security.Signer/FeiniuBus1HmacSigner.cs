@@ -17,6 +17,7 @@ namespace FeiniuBus.Security.Signer
         private const string FeiniuBus1AlgorithmTag = Scheme + "-" + Algorithm;
 
         private const string Iso8601BasicDateTimeFormat = "yyyyMMddTHHmmssZ";
+        private const string Iso8601BasicDateFormat = "yyyyMMdd";
 
         private const string Terminator = "feiniubus_request";
         private static readonly byte[] TerminatorBytes = Encoding.UTF8.GetBytes(Terminator);
@@ -29,21 +30,107 @@ namespace FeiniuBus.Security.Signer
 
         private static readonly Regex CompressWhitespaceRegex = new Regex("\\s+");
         
-        public override HmacSigningResult Sign(Uri endpoint, byte[] body, IDictionary<string, string> header, IDictionary<string, string> parameter, string identifier,
-            string key)
+        public override HmacSigningResult Sign(SigningContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        private HmacSigningResult SignRequest()
+        private HmacSigningResult SignRequest(SigningContext ctx)
         {
             var result = new HmacSigningResult();
+            if (ctx.Header.ContainsKey(HeaderKeys.HostHeader))
+            {
+                ctx.Header.Remove(HeaderKeys.HostHeader);
+            }
+            var hostHeader = ctx.Endpoint.Host;
+            if (!ctx.Endpoint.IsDefaultPort)
+            {
+                hostHeader += ":" + ctx.Endpoint.Port;
+            }
+            ctx.Header.Add(HeaderKeys.HostHeader, hostHeader);
+            result.Headers.Add(HeaderKeys.HostHeader, ctx.Header[HeaderKeys.HostHeader]);
+            
             var signedAt = InitializeHeaders(result);
+            var credentialString = BuildCredentialString(signedAt);
+            var bodyHash = SetRequestBodyHash(ctx.Body);
+            
+            var sortedHeaders = SortAndPruneHeaders(ctx.Header);
+            var canonicalizedHeaderNames = CanonicalizeHeaderNames(sortedHeaders);
+
+            var parametersToCanonicalize = GetParametersToCanonicalize(ctx.Query);
+            var canonicalQueryParams = CanonicalizeQueryParameters(parametersToCanonicalize);
+
+            var canonicalRequest =
+                CanonicalizeRequest(ctx.Endpoint, ctx.Method, sortedHeaders, canonicalQueryParams, bodyHash);
+
+            var signature = ComputeSignature(ctx.Identifier, ctx.Key, signedAt, credentialString,
+                canonicalizedHeaderNames, canonicalRequest);
+
+            result.Signature = signature;
+            var authorizationHeader = new StringBuilder();
+            authorizationHeader.Append(FeiniuBus1AlgorithmTag);
+            authorizationHeader.AppendFormat(" {0}={1}/{2},", Credential, ctx.Identifier, credentialString);
+            authorizationHeader.AppendFormat("{0}={1},", SignedHeaders, canonicalizedHeaderNames);
+            authorizationHeader.AppendFormat("{0}={1}", Signature, signature);
+            result.Headers.Add(HeaderKeys.AuthorizationHeader, authorizationHeader.ToString());
 
             return result;
         }
 
-        private static string CanonicalizeRequest(Uri endpoint, string httpPath, string httpMethod,
+        private static string ComputeSignature(string identifier, string key, DateTime signedAt,
+            string credentialString, string signedHeaders, string canonicalRequest)
+        {
+            var dateStamp = signedAt.ToString(Iso8601BasicDateFormat, CultureInfo.InvariantCulture);
+
+
+
+            var stringToSignBuilder = new StringBuilder();
+            stringToSignBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0}-{1}\n{2}\n{3}\n",
+                Scheme,
+                Algorithm,
+                signedAt.ToString(Iso8601BasicDateTimeFormat, CultureInfo.InvariantCulture),
+                credentialString);
+
+            var canonicalRequestHashBytes = ComputeHash(canonicalRequest);
+            stringToSignBuilder.Append(Hex.EncodeToString(canonicalRequestHashBytes, true));
+
+            var skey = ComposeSigningKey(key, dateStamp);
+            var stringToSign = stringToSignBuilder.ToString();
+            var signature = ComputeKeyedHash(SigningAlgorithm.HmacSHA256, skey, stringToSign);
+            return Hex.EncodeToString(signature, true);
+        }
+
+        private static byte[] ComposeSigningKey(string key, string date)
+        {
+            char[] ksecret = null;
+
+            try
+            {
+                ksecret = (Scheme + key).ToCharArray();
+
+                var hashDate = ComputeKeyedHash(SigningAlgorithm.HmacSHA256, Encoding.UTF8.GetBytes(ksecret),
+                    Encoding.UTF8.GetBytes(date));
+                return ComputeKeyedHash(SigningAlgorithm.HmacSHA256, hashDate, TerminatorBytes);
+            }
+            finally
+            {
+                if (ksecret != null)
+                {
+                    Array.Clear(ksecret, 0, ksecret.Length);
+                }
+            }
+        }
+
+        private static string BuildCredentialString(DateTime signedAt)
+        {
+            var credentialStringBuilder = new StringBuilder();
+            credentialStringBuilder.AppendFormat("{0}/{1}",
+                signedAt.ToString(Iso8601BasicDateFormat, CultureInfo.InvariantCulture), Terminator);
+
+            return credentialStringBuilder.ToString();
+        }
+
+        private static string CanonicalizeRequest(Uri endpoint, string httpMethod,
             IDictionary<string, string> sortedHeaders, string canonicalQueryString, string bodyHash)
         {
             var canonicalRequest = new StringBuilder();

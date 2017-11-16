@@ -6,7 +6,6 @@ namespace FeiniuBus.Security.Signer
 {
     public interface IHmacSigner
     {
-        HmacSigningResult Sign(Uri endpoint, byte[] body, IDictionary<string, string> header,
-            IDictionary<string, string> parameter, string identifier, string key);
+        HmacSigningResult Sign(SigningContext ctx);
     }
 }

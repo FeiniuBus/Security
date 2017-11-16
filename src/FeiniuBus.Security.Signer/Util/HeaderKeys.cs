@@ -4,5 +4,6 @@
     {
         public const string XFeiniuBusDateHeader = "X-FeiniuBus-Date";
         public const string AuthorizationHeader = "Authorization";
+        public const string HostHeader = "Host";
     }
 }
