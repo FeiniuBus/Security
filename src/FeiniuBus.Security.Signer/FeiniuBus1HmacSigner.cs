@@ -32,7 +32,7 @@ namespace FeiniuBus.Security.Signer
         
         public override HmacSigningResult Sign(SigningContext ctx)
         {
-            throw new NotImplementedException();
+            return SignRequest(ctx);
         }
 
         private HmacSigningResult SignRequest(SigningContext ctx)
@@ -63,8 +63,7 @@ namespace FeiniuBus.Security.Signer
             var canonicalRequest =
                 CanonicalizeRequest(ctx.Endpoint, ctx.Method, sortedHeaders, canonicalQueryParams, bodyHash);
 
-            var signature = ComputeSignature(ctx.Identifier, ctx.Key, signedAt, credentialString,
-                canonicalizedHeaderNames, canonicalRequest);
+            var signature = ComputeSignature(ctx.Key, signedAt, credentialString, canonicalRequest);
 
             result.Signature = signature;
             var authorizationHeader = new StringBuilder();
@@ -77,8 +76,8 @@ namespace FeiniuBus.Security.Signer
             return result;
         }
 
-        private static string ComputeSignature(string identifier, string key, DateTime signedAt,
-            string credentialString, string signedHeaders, string canonicalRequest)
+        private static string ComputeSignature(string key, DateTime signedAt, string credentialString,
+            string canonicalRequest)
         {
             var dateStamp = signedAt.ToString(Iso8601BasicDateFormat, CultureInfo.InvariantCulture);
 
