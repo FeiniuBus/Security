@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeiniuBus.AspNetCore.Authen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeiniuBus.Security.Signer", "src\FeiniuBus.Security.Signer\FeiniuBus.Security.Signer.csproj", "{7D93D3AC-EBB9-4EA4-9322-4EF7FF83A431}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E024ED68-9CD0-4C2A-8009-03A92712E3E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeiniuBus.Security.Signer.Test", "test\FeiniuBus.Security.Signer.Test\FeiniuBus.Security.Signer.Test.csproj", "{2ADA6E83-0D30-4A28-B56E-64CA3C696A31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,11 +37,18 @@ Global
 		{7D93D3AC-EBB9-4EA4-9322-4EF7FF83A431}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D93D3AC-EBB9-4EA4-9322-4EF7FF83A431}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D93D3AC-EBB9-4EA4-9322-4EF7FF83A431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ADA6E83-0D30-4A28-B56E-64CA3C696A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADA6E83-0D30-4A28-B56E-64CA3C696A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADA6E83-0D30-4A28-B56E-64CA3C696A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADA6E83-0D30-4A28-B56E-64CA3C696A31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {976C4060-B590-4D64-AD4E-764B81CE907C}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2ADA6E83-0D30-4A28-B56E-64CA3C696A31} = {E024ED68-9CD0-4C2A-8009-03A92712E3E3}
 	EndGlobalSection
 EndGlobal
