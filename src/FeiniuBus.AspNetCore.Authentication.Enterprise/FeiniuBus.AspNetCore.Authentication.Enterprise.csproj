@@ -12,9 +12,6 @@
     <RepositoryUrl>https://github.com/FeiniuBus/Security.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>enterprise;authentication;security;</PackageTags>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
-    <Version>2.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="$(MicrosoftAspNetCoreAuthenticationPackageVersion)" />
