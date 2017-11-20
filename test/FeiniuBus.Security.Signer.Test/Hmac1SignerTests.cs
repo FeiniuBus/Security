@@ -87,15 +87,7 @@ namespace FeiniuBus.Security.Signer.Test
             var res = new FeiniuBus1HmacSigner().Sign(signingCtx);
             foreach (var header in res.Headers)
             {
-                if (header.Key == "Authorization")
-                {
-                    var parts = header.Value.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                    req.Headers.Authorization = new AuthenticationHeaderValue(parts[0], parts[1]);
-                }
-                else
-                {
-                    req.Headers.Add(header.Key, header.Value);
-                }
+                req.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
 
             await server.CreateClient().SendAsync(req).ConfigureAwait(false);
