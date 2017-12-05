@@ -5,10 +5,12 @@
     <Description>FeiniuBus enterprise authentication middleware</Description>
     <Copyright>© FeiniuBus Corporation. All rights reserved.</Copyright>
     <PackageTags>enterprise;authentication;security;</PackageTags>
+    <VersionSuffix>0.1</VersionSuffix>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="$(MicrosoftAspNetCoreAuthenticationPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="$(MicrosoftMemoryCacheExtensionsPackageVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
   </ItemGroup>
+  <Import Project="..\..\version.props" />
 </Project>

@@ -5,9 +5,11 @@
     <Description>FeiniuBus Data Protection</Description>
     <Copyright>© FeiniuBus Corporation. All rights reserved.</Copyright>
     <PackageTags>aspnetcore;data;feiniubus;protection</PackageTags>
+    <VersionSuffix>0.1</VersionSuffix>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="$(AWSSDKS3PackageVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="$(MicrosoftAspNetCoreDataProtectionPackageVersion)" />
   </ItemGroup>
+  <Import Project="..\..\version.props" />
 </Project>
