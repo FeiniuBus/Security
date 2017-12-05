@@ -11,21 +11,18 @@ using System.Xml.Linq;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.DataProtection.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace FeiniuBus.AspNetCore.DataProtection
 {
     public class S3XmlRepository : IXmlRepository
     {
-        private readonly ILogger _logger;
         private readonly IAmazonS3 _client;
 
         private const string FriendlyNameMetadata = "xml-friendly-name";
 
-        public S3XmlRepository(IAmazonS3 client, IS3XmlRepositoryConfig config, ILogger<S3XmlRepository> logger)
+        public S3XmlRepository(IAmazonS3 client, IS3XmlRepositoryConfig config)
         {
             _client = client;
-            _logger = logger;
 
             Config = config ?? throw new ArgumentNullException(nameof(config));
         }
@@ -81,9 +78,6 @@ namespace FeiniuBus.AspNetCore.DataProtection
         public async Task StoreElementAsync(XElement element, string friendlyName, CancellationToken cancellation)
         {
             var key = Config.KeyPrefix + Guid.NewGuid() + ".xml";
-            _logger.LogDebug(
-                "Storing DataProtection key at S3 location {0} in bucket {1}, friendly name of {2} as metadata", key,
-                Config.Bucket, friendlyName);
             
             var pr = new PutObjectRequest
             {
@@ -151,9 +145,6 @@ namespace FeiniuBus.AspNetCore.DataProtection
 
             try
             {
-                _logger.LogDebug("Retrieving DataProtection key at S3 location {0} in bucket {1}", item.Key,
-                    Config.Bucket);
-                
                 var gr = new GetObjectRequest
                 {
                     BucketName = Config.Bucket,
