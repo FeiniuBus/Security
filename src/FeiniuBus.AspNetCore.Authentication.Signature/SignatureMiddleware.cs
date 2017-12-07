@@ -125,6 +125,11 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
                 var key = GetLocalizedKey(accessKeyId);
                 var data = Options.Cache.Get<byte[]>(key);
 
+                if (data == null)
+                {
+                    return null;
+                }
+
                 var secret = Encoding.UTF8.GetString(data, 0, data.Length);
                 return secret;
             }
