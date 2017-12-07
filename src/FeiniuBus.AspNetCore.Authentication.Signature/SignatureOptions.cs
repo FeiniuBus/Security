@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -24,6 +25,6 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
         /// <summary>
         /// 认证服务器终端地址
         /// </summary>
-        public PathString Endpoint { get; set; }
+        public Uri Endpoint { get; set; }
     }
 }
