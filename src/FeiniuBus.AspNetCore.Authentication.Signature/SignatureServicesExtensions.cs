@@ -22,7 +22,7 @@ namespace FeiniuBus.AspNetCore.Authentication.Signature
             
             services.AddOptions();
             services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
-            services.TryAdd(ServiceDescriptor
+            services.TryAddEnumerable(ServiceDescriptor
                 .Singleton<IPostConfigureOptions<SignatureOptions>, PostConfigureSignatureOptions>());
             
             services.Configure(configuration);

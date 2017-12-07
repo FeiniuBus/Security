@@ -20,7 +20,7 @@ namespace FeiniuBus.AspNetCore.Authentication.Enterprise
             string authenticationScheme, Action<EnterpriseAuthenticationOptions> configureOptions)
         {
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
-            builder.Services.TryAdd(ServiceDescriptor
+            builder.Services.TryAddEnumerable(ServiceDescriptor
                 .Singleton<IPostConfigureOptions<EnterpriseAuthenticationOptions>,
                     PostConfigureEnterpriseAuthenticationOptions>());
             return builder.AddScheme<EnterpriseAuthenticationOptions, EnterpriseAuthenticationHandler>(
