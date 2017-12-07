@@ -5,10 +5,10 @@
   <PropertyGroup Label="Package Versions">
     <AWSSDKS3PackageVersion>3.3.11.2</AWSSDKS3PackageVersion>
     <MicrosoftAspNetCoreDataProtectionPackageVersion>2.0.0</MicrosoftAspNetCoreDataProtectionPackageVersion>
-    <MicrosoftAspNetCoreHttpAbstractionsPackageVersion>2.0.0</MicrosoftAspNetCoreHttpAbstractionsPackageVersion>
+    <MicrosoftAspNetCoreHttpAbstractionsPackageVersion>2.0.1</MicrosoftAspNetCoreHttpAbstractionsPackageVersion>
     <MicrosoftMemoryCacheExtensionsPackageVersion>2.0.0</MicrosoftMemoryCacheExtensionsPackageVersion>
     <MicrosoftLoggingAbstractionsExtensionsPackageVersion>2.0.0</MicrosoftLoggingAbstractionsExtensionsPackageVersion>
-    <MicrosoftAspNetCoreAuthenticationPackageVersion>2.0.0</MicrosoftAspNetCoreAuthenticationPackageVersion>
+    <MicrosoftAspNetCoreAuthenticationPackageVersion>2.0.1</MicrosoftAspNetCoreAuthenticationPackageVersion>
     <MicrosoftNETTestSdkPackageVersion>15.5.0</MicrosoftNETTestSdkPackageVersion>
     <NewtonsoftJsonPackageVersion>10.0.3</NewtonsoftJsonPackageVersion>
     <XunitPackageVersion>2.3.1</XunitPackageVersion>
