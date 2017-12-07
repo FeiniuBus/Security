@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Net.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace FeiniuBus.AspNetCore.Authentication.Enterprise
@@ -15,6 +16,8 @@ namespace FeiniuBus.AspNetCore.Authentication.Enterprise
         public bool EnableCaching { get; set; }
         
         public IMemoryCache Cache { get; set; }
+        
+        public HttpClient BackChannel { get; set; }
         
         public int? AbsoluteExpirationRelativeToNow { get; set; }
     }

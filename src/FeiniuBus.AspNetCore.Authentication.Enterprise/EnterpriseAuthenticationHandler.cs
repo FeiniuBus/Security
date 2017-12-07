@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -23,16 +22,11 @@ namespace FeiniuBus.AspNetCore.Authentication.Enterprise
         public EnterpriseAuthenticationHandler(IOptionsMonitor<EnterpriseAuthenticationOptions> options,
             ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
-            Options.Cache = Context.RequestServices.GetRequiredService<IMemoryCache>();
-            
-            Backchannel = new HttpClient(new HttpClientHandler());
-            Backchannel.DefaultRequestHeaders.UserAgent.ParseAdd(
-                "FeiniuBus ASP.NET Core enterprise authentication middleware");
-            Backchannel.MaxResponseContentBufferSize = 1024 * 1024; // 1 MB
-            Backchannel.Timeout = TimeSpan.FromSeconds(5);  // 5s
         }
-        
-        protected HttpClient Backchannel { get; }
+
+        protected HttpClient Backchannel => Options.BackChannel;
+
+        protected IMemoryCache Cache => Options.Cache;
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
@@ -98,7 +92,12 @@ namespace FeiniuBus.AspNetCore.Authentication.Enterprise
             try
             {
                 var key = GetLocalizedKey(accessKey);
-                var data = Options.Cache.Get<byte[]>(key);
+                var data = Cache.Get<byte[]>(key);
+
+                if (data == null)
+                {
+                    return null;
+                }
 
                 var model = JsonConvert.DeserializeObject<UserApplicationAuthentication>(
                     Encoding.UTF8.GetString(data, 0, data.Length));
@@ -124,7 +123,7 @@ namespace FeiniuBus.AspNetCore.Authentication.Enterprise
                 }
 
                 var value = JsonConvert.SerializeObject(model);
-                Options.Cache.Set(GetLocalizedKey(accessKey), Encoding.UTF8.GetBytes(value), memoryCacheEntryOptions);
+                Cache.Set(GetLocalizedKey(accessKey), Encoding.UTF8.GetBytes(value), memoryCacheEntryOptions);
             }
             catch (Exception e)
             {

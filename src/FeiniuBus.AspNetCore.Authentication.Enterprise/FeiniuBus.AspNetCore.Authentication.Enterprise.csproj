@@ -5,7 +5,7 @@
     <Description>FeiniuBus enterprise authentication middleware</Description>
     <Copyright>© FeiniuBus Corporation. All rights reserved.</Copyright>
     <PackageTags>enterprise;authentication;security;</PackageTags>
-    <VersionSuffix>0.1</VersionSuffix>
+    <VersionSuffix>1.0</VersionSuffix>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="$(MicrosoftAspNetCoreAuthenticationPackageVersion)" />
